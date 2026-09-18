@@ -4,11 +4,18 @@ class SpatialObject:
     def __init__(self, geometry):
         self.geometry = geometry
 
-    def intersects(self, other):
-        return self.geometry.intersects(other.geometry)
-
     def bbox(self):
         return self.geometry.bounds
+
+    def intersects(self, other):
+        """
+        Check intersection with either another SpatialObject/Parcel
+        or directly with a Shapely geometry (Polygon, Point, etc.).
+        """
+        if hasattr(other, "geometry"):
+            return self.geometry.intersects(other.geometry)
+        else:
+            return self.geometry.intersects(other)
 
 
 class Parcel(SpatialObject):
@@ -31,13 +38,10 @@ class Parcel(SpatialObject):
 
     @classmethod
     def from_dict(cls, record):
-        geom = shape(record["geometry"])
+        geometry = shape(record["geometry"])
         attributes = {
             "zone": record["zone"],
             "is_active": record["is_active"],
             "area_sqm": record["area_sqm"],
         }
-        return cls(record["parcel_id"], geom, attributes)
-
-    def __repr__(self):
-        return f"Parcel(id={self.id}, zone={self.zone}, active={self.is_active}, area={self.area_sqm})"
+        return cls(record["parcel_id"], geometry, attributes)
