@@ -38,3 +38,47 @@
   - is_active: True
   - area_sqm: 5871.15
 - Demo script confirms properties return correct values and geometry is handled by Shapely
+
+# Laboratory 4 – Part C: Algorithm First
+
+### Q1 – Total Active Area
+Pseudocode:
+SET total = 0  
+FOR each parcel in parcels  
+    IF parcel.is_active  
+        ADD parcel.area_sqm to total  
+RETURN total
+
+### Q2 – Parcels Above Threshold
+Pseudocode:
+SET result = []  
+FOR each parcel in parcels  
+    IF parcel.area_sqm >= threshold  
+        ADD parcel.id to result  
+RETURN result  
+
+### Q3 – Zone Counts
+Pseudocode:
+SET counts = {}  
+FOR each parcel in parcels  
+    zone = parcel.zone  
+    IF zone not in counts  
+        SET counts[zone] = 0  
+    INCREMENT counts[zone] by 1  
+RETURN counts
+
+### Q4 – Development Candidates
+Pseudocode:
+SET result = []  
+FOR each parcel in parcels  
+    IF parcel.is_active AND parcel.zone in [Residential, Commercial] AND parcel.area_sqm >= threshold  
+        ADD parcel.id to result  
+RETURN result
+
+### Q5 – Parcels Intersecting Study Area
+Pseudocode:
+SET result = []  
+FOR each parcel in parcels  
+    IF parcel.geometry intersects study_area  
+        ADD parcel.id to result  
+RETURN result
